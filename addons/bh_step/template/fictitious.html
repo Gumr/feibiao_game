@@ -1,0 +1,75 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('member');}">用户管理</a></li>
+    <li class="active"><a href="javascript:;">虚拟用户管理</a></li>
+</ul>
+
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('fictitious', array('op' => 'addshow'));}">添加虚拟用户</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">id</th>
+                <th style="width:70px;">昵称</th>
+                <th style="width:80px;">头像</th>
+                <th style="width:80px;">活力币</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td style="width:80px;">{$item['id']}</td>
+                <td style="width:80px;">{$item['nickname']}</td>
+                <td style="width:80px;"><img src="{$item['head']}" width="39px" height="39px"></td>
+                <td style="width:80px;">{$item['currency']}</td>
+                <td style="width:80px;">
+                    <a href="{php echo $this->createWeburl('fictitious', array('op' => 'edit_show', 'id' => $item['id']));}">编辑</a>
+                    <a href="javascript:;" data-id="{$item['id']}" class="delete">删除</a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

@@ -1,0 +1,85 @@
+{template 'common/header'}
+<style type="text/css">
+	.help-block{
+		color: red !important;
+	}
+</style>
+<div class="clearfix">
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('goods')}">物品列表</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('goods_post')}">添加物品</a></li>
+</ul>
+<div class="clearfix">
+		<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form2">
+			<div class="panel panel-default" id="step1">
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="col-md-2 control-label">商品排序：</label>
+						<div class="col-md-2">
+							<input class="form-control" type="text" name="sort" value="{$info['sort']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">商品名称：</label>
+						<div class="col-md-6">
+							<input class="form-control" type="text" name="title" value="{$info['title']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">商品型号：</label>
+						<div class="col-md-6">
+							<input class="form-control" type="text" name="model" value="{$info['model']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">商品图片：</label>
+						<div class="col-sm-6">
+							{php echo tpl_form_field_image('thumb',$info['thumb']);}
+							<div class='help-block'>图片尺寸为正方形</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">专柜价格：</label>
+						<div class="col-md-2">
+							<input class="form-control" type="text" name="storeprice" value="{$info['storeprice']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">闯关价格：</label>
+						<div class="col-md-2">
+							<input class="form-control" type="text" name="price" value="{$info['price']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">商品类型：</label>
+						<div class="col-sm-9 col-xs-12">
+							<label class="radio-inline">
+								<input type="radio" name="type" value="1"  {if $info['category'] == 1} checked {/if} /> 实物
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="type" value="2" {if $info['category'] == 2} checked {/if} />虚拟商品
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label"></label>
+						<div class="col-md-9">
+							{if empty($info['id'])}
+								<input type="hidden" name="act" value="add">
+							{else}
+								<input type="hidden" name="act" value="edit">
+								<input name="id" type="hidden" value="{$info['id']}">
+							{/if}
+							<input name="submit" id="submit" type="submit" value="保存" class="btn btn-primary min-width">
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+</div>
+{template 'common/footer'}

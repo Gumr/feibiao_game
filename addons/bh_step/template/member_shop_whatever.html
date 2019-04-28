@@ -1,0 +1,43 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('member');}">用户管理</a></li>
+    <li class="active"><a href="javascript:;">关联店铺</a></li>
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">店铺:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <select class="select valid" name="shop_id" size="1" aria-invalid="false" style="width: 150px;">
+                {loop $shop $item}
+                <option  value="{$item['id']}">{$item['shop_name']}</option>
+                {/loop}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">权限:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input type="checkbox" name="permissions[]" value="1">核销
+            <input type="checkbox" name="permissions[]" value="2" style="margin-left: 30px;">核销记录
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"> </label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input type="checkbox" name="permissions[]" value="3">提现
+            <input type="checkbox" name="permissions[]" value="4" style="margin-left: 30px;">商品管理
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="relation">
+            <input type="hidden" name="id" value="{$member_id}">
+            <input type="submit" name="submit" id="submit" value="添加" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+
+<link rel="stylesheet" type="text/css" href="../../../../addons/{$modular_name}/template/js/webuploader/css/globle.css?1" />
+<script type="text/javascript" src="../../../../addons/{$modular_name}/template/js/webuploader/js/webuploader.min.js"></script>

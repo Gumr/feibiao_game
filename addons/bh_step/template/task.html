@@ -1,0 +1,89 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">任务管理</a></li>
+    <li class=""><a href="{php echo $this->createWeburl('task', array('op' => 'addshow'));}">添加任务</a></li>
+</ul>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">任务id</th>
+                <th style="width:80px;">任务名称</th>
+                <th style="width:70px;">任务描述</th>
+                <th style="width:85px;">图标</th>
+                <th style="width:60px;">获得活力币</th>
+                <th style="width:80px;">appid</th>
+                <th style="width:60px;">路径</th>
+                <th style="width:80px;">位置</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $k}
+            <tr>
+                <td>{$k['id']}</td>
+                <td>{$k['title']}</td>
+                <td>{$k['describe']}</td>
+                <td><img src="{$k['icon_path']}" width="39px" height="39px"></td>
+                <td>{$k['currency']}</td>
+                <td>{$k['appid']}</td>
+                <td>{$k['path']}</td>
+                <td>{php echo $k['is_home'] == 1 ? '非首页' : '首页'}</td>
+                <td>
+                    <a href="{php echo $this->createWeburl('task', array('op' => 'editshow', 'id' => $k['id']));}">编辑</a>
+                    <a href="javascript:;" data-id="{$k['id']}" class="delete">删除</a>
+                    <a href="javascript:;" data-id="{$k['id']}" class="settop">置顶</a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该商品')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+        $('.settop').click(function () {
+            id = $(this).data('id');
+            $.post('', {id:id, op:'settop'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('置顶失败');
+                }
+
+            }, 'json')
+        });
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

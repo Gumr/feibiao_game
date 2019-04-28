@@ -1,0 +1,137 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">订单管理</a></li>
+</ul>
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="order">
+    <div class="form-group">
+        <label class="col-xs-1 col-sm-1 control-label">会员昵称</label>
+        <div class="col-sm-2 col-xs-2">
+            <input type="text" class="form-control" name="member_name"  value="{$member_name}" />
+        </div>
+       <label class="col-xs-1 col-sm-1 control-label">商品名称</label>
+        <div class="col-sm-2 col-xs-2">
+            <input type="text" class="form-control" name="goods_name"  value="{$goods_name}" />
+        </div>
+        <label class="col-xs-1 col-sm-1 control-label">订单时间</label>
+        <div class="col-sm-2 col-xs-2">
+            {php echo _tpl_form_field_date('start_time', $start_time)}
+        </div>
+        <div class="col-sm-2 col-xs-2">
+            {php echo _tpl_form_field_date('end_time', $end_time)}
+        </div>
+    </div>
+   <div class="form-group">
+       <label class="col-xs-1 col-sm-1 control-label">订单状态</label>
+       <div class="col-sm-2 col-xs-2">
+           <select class="select valid" name="status" size="1" aria-invalid="false" style="width: 150px;">
+               <option value="0">订单状态</option>
+               {loop $status $key $item}
+               <option value="{$key}" {if $key == $order_status}selected="selected"{/if}>{$item}</option>
+               {/loop}
+           </select>
+       </div>
+      <!-- <label class="col-xs-1 col-sm-1 control-label">导出条数</label>
+       <div class="col-sm-2 col-xs-2">
+           <select class="select valid" name="pageSize" size="1" aria-invalid="false" style="width: 150px;">
+               {loop $pageSize $key $item}
+               <option value="{$key}" {if $key == $pageSize_status}selected="selected"{/if}>{$item}</option>
+               {/loop}
+           </select>
+       </div>-->
+        <button type="submit" class=" btn btn-default">搜索</button>
+        <div type="text" class="btn btn-info"> <a href="{php echo $this->createWeburl('order', array('op' => 'excel', 'start_time' => $start_time, 'end_time' => $end_time, 'goods_name'=> $goods_name, 'member_name' => $member_name, 'status' => $order_status));}">导出</a></div>
+        <div  class="btn btn-warning"><a href="{php echo $this->createWeburl('order', array('op' => 'sendOut'));}">批量发货</a></div>
+    </div>
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">商品名称</th>
+                <th style="width:70px;">会员账号</th>
+                <th style="width:60px;">收货人信息</th>
+                <th style="width:55px;">状态</th>
+                <th style="width:85px;">类型</th>
+                <th style="width:60px;">兑换码</th>
+                <th style="width:60px;">快递公司</th>
+                <th style="width:80px;">物流单号</th>
+                <th style="width:80px;">时间</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['shop_name']}</td>
+                <td>{$item['member_name']}</td>
+                <td>姓名:{$item['name']}<br/>电话:{$item['phone']}<br/>收货人地址:{$item['address']}</td>
+                <td>{$item['status_name']}</td>
+                <td>{php echo $item['type'] == 1 ? '实物' : '虚拟'}</td>
+                <td>{$item['fictitious']}</td>
+                <td>{$item['courier_name']}</td>
+                <td>{$item['courier_number']}</td>
+                <td>{php echo date('Y-m-d H:i:s', $item['created'])}</td>
+                <td>
+                    {if $item['type'] == 1}
+                    {if $item['status'] == 2}
+                    <a href="{php echo $this->createWeburl('order', array('op' => 'success', 'id' => $item['id']));}">完成</a>
+                    <a href="{php echo $this->createWeburl('order', array('op' => 'cancel', 'id' => $item['id']));}">取消</a>
+                    {/if}
+                    {if $item['status'] == 1}
+                    <a href="{php echo $this->createWeburl('order', array('op' => 'editshow', 'id' => $item['id']));}">发货</a>
+                    {/if}
+                    {if $item['status'] == 3}
+                    <a href="javascript:;">已完成</a>
+                    {/if}
+                    {if $item['status'] == 4}
+                    <a href="javascript:;" data-id="{$item['id']}" class="delete_cancel">无效订单</a>
+                    {/if}
+                    {/if}
+                   <!--<a href="{php echo $this->createWeburl('order', array('op' => 'details', 'id' => $item['id']));}" class="delete_cancel">详情</a>-->
+                    <!-- <a href="javascript:;" data-id="{$item['id']}" class="delete">删除</a>-->
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+  <div class="ding" style="text-align: right">共有{php echo $total ? : 0}个订单</div>
+    {$pager}
+</div>
+<script type="application/javascript">
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该商品')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+
+</script>

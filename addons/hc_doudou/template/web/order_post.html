@@ -1,0 +1,169 @@
+{template 'common/header'}
+
+
+
+<div class="clearfix">
+
+<style type="text/css">
+
+	.rank img{width:16px; height:16px;}
+
+	ul.order-process li {float : left; width : 20%; text-align : center; overflow : hidden;}
+
+	ul.order-process li p {margin-bottom : 10px;}
+
+	ul.order-process .order-process-time {color : #CCC;}
+
+	ul.order-process .order-process-state {color : #999;}
+
+	ul.order-process .square {display : inline-block; width : 20px; height : 20px; border-radius : 10px; background-color : #E6E6E6; color : #FFF;font-style : normal; position : absolute; left : 50%; z-index : 2; top : 50%; margin : -10px 0 0 -10px;}
+
+	ul.order-process .square.finish{padding-top:2px; padding-right:2px;}
+
+	ul.order-process .bar {position : relative; height : 20px;}
+
+	ul.order-process .bar:after {content : " "; display : block; width : 100%; height : 4px; background-color : #E6E6E6; position : absolute; top : 50%; margin-top : -2px; z-index : 1;}
+
+	ul.order-process li:first-child .bar:after {margin-left : 50%;}
+
+	ul.order-process li:last-child .bar:after {margin-left :-50%;}
+
+	ul.order-process .active .square,ul.order-process .active .bar:after {background-color : #80CCFF;}
+
+	ul.order-process .active .order-process-state {color : #80CCFF;}
+
+	.order-detail-info>div{margin-bottom:10px; padding-left:15px;}
+
+	.page-trade-order h4{font-size:14px; font-weight:700;}
+
+	.page-trade-order .form-group{margin-bottom:0;}
+
+	.page-trade-order .form-group .control-label{font-weight:normal; color:#999;}
+
+	.page-trade-order .order-infos{border-right:1px solid #ddd;}
+
+	.page-trade-order .parting-line{height:1px;border-top:1px dashed #e5e5e5; margin:3px 0;}
+
+	.page-trade-order .order-state{padding-left:40px; position:relative; margin:20px 0 40px;}
+
+	.page-trade-order .order-state>span{color:#07d; position:absolute; left:0; top:5px; font-size:25px; display:inline-block; width:30px; height:30px; border:1px solid #07d; border-radius:30px; text-align:center; line-height:30px;}
+
+	#close-order ul li{padding:5px 15px; cursor:pointer;}
+
+	#close-order ul li:hover{background:#eee;}
+
+	.page-trade-order .col-sm-9{word-break: break-word; overflow:hidden;}
+
+</style>
+
+<!--订单概况 start-->
+
+<div class="page-trade-order">
+
+	<div class="order-list">
+
+		<div class="freight-content">
+
+			<div class="freight-template-item panel panel-default">
+
+				<div class="panel-body clearfix">
+
+					<form class="form-horizontal" role="form">
+
+						<div class="col-xs-12 col-sm-6 order-infos">
+							<h4>订单信息</h4>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">订单编号：</label>
+								<div class="col-md-9 form-control-static">{$info['trade_no']}</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">下单时间：</label>
+								<div class="col-md-9 form-control-static">{php echo date('Y-m-d H:i:s',$info['createtime'])}</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">快递单号：</label>
+								<div class="col-md-9 form-control-static">{$info['expresn']}</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">收货人：</label>
+								<div class="col-md-9 form-control-static">{$address['username']}</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">联系电话：</label>
+								<div class="col-md-9 form-control-static">{$address['mobile']}</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">收货地址：</label>
+								<div class="col-md-9 form-control-static">{$address['address']}</div>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6 order-infos">
+							<h4>发货信息</h4>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">订单状态：</label>
+								<div class="col-md-9 form-control-static">
+									{if $info['status']==1}
+										<span class="label label-warning">待发货</span>
+										<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">去发货</button>
+									{elseif $info['status']==2}
+										<span class="label label-success">已发货</span>
+									{/if}
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">金额：</label>
+								<div class="col-md-9 form-control-static">
+									{$info['price']}
+								</div>
+							</div>
+
+						</div>
+						<!-- 模态框（Modal） -->
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						        <div class="modal-content">
+						            <div class="modal-header">
+						                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                <h4 class="modal-title" id="myModalLabel">发货</h4>
+						            </div>
+						            <div class="modal-body">
+										快递单号：<input type="text" class="form-control" id="send" data-id="{$info['id']}" placeholder="韵达快递2018301568" value="{$info['expresn']}">
+						            </div>
+						            <div class="modal-footer">
+						                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						                <button type="button" class="btn btn-primary subm">确认</button>
+						            </div>
+						        </div><!-- /.modal-content -->
+						    </div><!-- /.modal -->
+						</div>
+
+					</form>
+	
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+<script type="text/javascript">
+$(".subm").click(function(){
+
+	var code = $("#send").val();
+	var id = $("#send").attr('data-id');
+    $.ajax({
+	    type: "POST",
+	    url: "{php echo $this->createWebUrl('order_post',array('act'=>'addexpresn'));php}",
+	    data: {id:id,code:code},
+	    dataType: "json",
+	    success: function(data){
+	    	$('#myModal').modal('hide');
+	    	location.reload()
+	    }
+	});
+})
+</script>
+{template 'common/footer'}

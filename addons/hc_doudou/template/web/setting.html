@@ -1,0 +1,465 @@
+{template 'common/header'}
+<style>
+    .set_div{
+        display: none;
+    }
+    .help-block{
+        color: red !important;
+    }
+    .nav-border{
+        border: 1px solid #e2d5d5;
+        margin: 10px;
+        padding: 10px;
+    }
+    .input-control{
+        height:34px;
+        line-height: 34px;
+        border-radius: 0;
+        box-shadow: 0 0 0;
+        text-shadow: 0 0 0;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+    }
+    .contain{
+        margin-top: 10px;
+    }
+</style>
+<ul class="nav nav-tabs" id="snav">
+    <li class="active"><a>基础设置</a></li>
+    <li><a>导航设置</a></li>
+    <li><a>充值设置</a></li>
+    <li><a>转发设置</a></li>
+    <li><a>审核设置</a></li>
+    <li><a>分销设置</a></li>
+    <li><a>提现设置</a></li>
+    <li><a>公众号</a></li>
+</ul>
+<script>
+    $('#snav li').click(function(){
+        $('#snav li').removeClass('active');
+        $(this).addClass('active');
+        $('.set_div').hide();
+        $('.set_div').eq($(this).index()).show();
+    });
+</script>
+<div class="panel-body">
+<form class="form-horizontal" id="form1" method="post" action="" enctype="multipart/form-data">
+    <div class="panel panel-default set_div" style="display: block;">
+        <div class="panel-heading">基础设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">小程序名称：</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="basic[title]" value="{$set['basic']['title']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">主题颜色：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_color('basic[color]', $set['basic'][color]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">头部文字颜色：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_color('basic[fontcolor]', $set['basic'][fontcolor]);}
+                </div>
+                <span class="help-block">只能是#ffffff和#000000</span>
+
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">顶部背景图片：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_image('basic[back]',$set['basic'][back]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">物品名称：</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="basic[prop]" value="{$set['basic']['prop']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">物品图片：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_image('basic[propicon]',$set['basic'][propicon]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">banner图片：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_image('basic[icon]',$set['basic'][icon]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">背景音乐：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_audio('basic[bgm]',$set['basic'][bgm]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">首页视频开关：</label>
+                <div class="col-xs-6">
+                    <label class="radio-inline">
+                        <input type="radio" name="basic[video_status]" {if empty($set['basic'][video_status])} checked {/if} value="0">开启
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="basic[video_status]" {if $set['basic'][video_status] == 1} checked {/if} value="1">关闭
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">首页载入视频：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_video('basic[video]',$set['basic'][video]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">闯关标题：</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="basic[cgtitle]" value="{$set['basic']['cgtitle']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">闯关购说明：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_ueditor('basic[explain]',$set['basic']['explain']);}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">导航设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">左侧文字[订单]</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="icon[fontorder]" value="{$set['icon']['fontorder']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">左侧图标[订单]</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('icon[order]',$set['icon']['order'])}
+                    <div class='help-block'>宽度120*120像素</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">右侧文字[我的]</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="icon[fontmy]" value="{$set['icon']['fontmy']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">右侧图标[我的]</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('icon[my]',$set['icon']['my'])}
+                    <div class='help-block'>宽度120*120像素</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">充值设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">IOS支付</label>
+                <div class="col-sm-9 col-xs-12">
+                    <label class="radio radio-inline">
+                        <input type="radio" value="0" {if empty($set['pay']['ios'])}checked=""{/if} name="pay[ios]">开启
+                    </label>
+                    <label class="radio radio-inline">
+                        <input type="radio" value="1" {if $set['pay']['ios']==1}checked=""{/if} name="pay[ios]">关闭
+                    </label>
+                    <div class="help-block"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">充值金额</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="pay[money]" value="{$set['pay']['money']}">
+                    <div class='help-block'>多个金额“|”分隔，例：6|12|18|24</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">转发设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">转发标题</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="forward[title]" value="{$set['forward']['title']}">
+                    <div class='help-block'>小程序转发标题</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">转发图片</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('forward[img]',$set['forward']['img'])}
+                    <div class='help-block'>小程序转发图片；宽度117*120像素</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">审核设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">审核中的版本号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="version[number]" value="{$set['version']['number']}">
+                    <span class="help-block">
+                        1.提交审核时：这个地方的版本号和当前版本号一样。<br/>
+                        2.上传微信审核填写的版本号和当前版本号一样。<br/>
+                        3.审核通过之后：修改这个地方的版本号和当前版本号不一样。
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">顶部图片</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('version[img]',$set['version']['img'])}
+                    <div class='help-block'>骗审页面顶部图片</div>
+                </div>
+            </div>
+            
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">公告icon：</label>
+                <div class="col-xs-6">
+                    {php echo tpl_form_field_image('version[icon]',$set['version'][icon]);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">公告标题：</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="version[title]" value="{$set['version']['title']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">公告描述：</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="version[desc]" value="{$set['version']['desc']}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">分销设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">分销开关：</label>
+                <div class="col-sm-9" style="line-height: 34px;">
+                    <input type="radio" name="fenxiao[switch]" {if empty($set['fenxiao']['switch'])}checked {/if} value="0">关闭
+                    <input type="radio" name="fenxiao[switch]" {if $set['fenxiao']['switch']==1}checked {/if} value="1">开启
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">分销等级：</label>
+                <div class="col-sm-9" style="line-height: 34px;">
+                    <input type="radio" name="fenxiao[level]" {if $set['fenxiao']['level']==1}checked="checked"{/if} value="1">一级
+                    <input type="radio" name="fenxiao[level]" {if $set['fenxiao']['level']==2}checked="checked"{/if} value="2">二级
+                    <input type="radio" name="fenxiao[level]" {if $set['fenxiao']['level']==3}checked="checked"{/if} value="3">三级
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">个人中心分销导航：</label>
+                <div class="input-group col-xs-8">
+                    <span class="input-group-addon">1</span>
+                    <input type="text" class="form-control" name="fenxiao[ctitle][]" value="{$set['fenxiao'][ctitle][0]}" >
+                    <span class="input-group-addon">2</span>
+                    <input type="text" class="form-control" name="fenxiao[ctitle][]" value="{$set['fenxiao'][ctitle][1]}" >
+                    <span class="input-group-addon">3</span>
+                    <input type="text" class="form-control" name="fenxiao[ctitle][]" value="{$set['fenxiao'][ctitle][2]}" >
+                    <span class="input-group-addon">4</span>
+                    <input type="text" class="form-control" name="fenxiao[ctitle][]" value="{$set['fenxiao'][ctitle][3]}" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">初级会员名称：</label>
+                <div class="input-group col-xs-3">
+                    <span class="input-group-addon">名称</span>
+                    <input type="text" class="form-control" name="fenxiao[grade][0][grade]" value="{$set['fenxiao'][grade][0]['grade']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">中级会员名称：</label>
+                <div class="input-group col-xs-6">
+                    <span class="input-group-addon">名称</span>
+                    <input type="text" class="form-control" name="fenxiao[grade][1][grade]" value="{$set['fenxiao'][grade][1]['grade']}">
+                    <span class="input-group-addon">升级需支付</span>
+                    <input type="text" class="form-control" name="fenxiao[grade][1][money]" value="{$set['fenxiao'][grade][1]['money']}" style="text-align: center;">
+                    <span class="input-group-addon">元</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">中级会员背景：</label>
+                <div class="input-group col-xs-6">
+                    {php echo tpl_form_field_image('fenxiao[grade][1][pic]',$set['fenxiao'][grade][1]['pic']);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">高级会员名称：</label>
+                <div class="input-group col-xs-6">
+                    <span class="input-group-addon">名称</span>
+                    <input type="text" class="form-control" name="fenxiao[grade][2][grade]" value="{$set['fenxiao'][grade][2]['grade']}">
+                    <span class="input-group-addon">升级需支付</span>
+                    <input type="text" class="form-control" name="fenxiao[grade][2][money]" value="{$set['fenxiao'][grade][2]['money']}" style="text-align: center;">
+                    <span class="input-group-addon">元</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">高级会员背景：</label>
+                <div class="input-group col-xs-6">
+                    {php echo tpl_form_field_image('fenxiao[grade][2][pic]',$set['fenxiao'][grade][2]['pic']);}
+                </div>
+            </div>
+                <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">初级分销比例：</label>
+                <div class="input-group col-xs-8">
+                    <span class="input-group-addon">一级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][0][commission1]" value="{$set['fenxiao'][commission][0]['commission1']}" style="text-align: center;">
+                    <span class="input-group-addon">% | 二级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][0][commission2]" value="{$set['fenxiao'][commission][0]['commission2']}" style="text-align: center;">
+                    <span class="input-group-addon">% | 三级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][0][commission3]" value="{$set['fenxiao'][commission][0]['commission3']}" style="text-align: center;">
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">中级分销比例：</label>
+                <div class="input-group col-xs-8">
+                    <span class="input-group-addon">一级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][1][commission1]" value="{$set['fenxiao'][commission][1]['commission1']}" style="text-align: center;">
+                    <span class="input-group-addon">% | 二级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][1][commission2]" value="{$set['fenxiao'][commission][1]['commission2']}" style="text-align: center;">
+                    <span class="input-group-addon">% | 三级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][1][commission3]" value="{$set['fenxiao'][commission][1]['commission3']}" style="text-align: center;">
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">高级分销比例：</label>
+                <div class="input-group col-xs-8">
+                    <span class="input-group-addon">一级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][2][commission1]" value="{$set['fenxiao'][commission][2]['commission1']}" style="text-align: center;">
+                    <span class="input-group-addon">% | 二级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][2][commission2]" value="{$set['fenxiao'][commission][2]['commission2']}" style="text-align: center;">
+                    <span class="input-group-addon">% | 三级</span>
+                    <input type="text" class="form-control" name="fenxiao[commission][2][commission3]" value="{$set['fenxiao'][commission][2]['commission3']}" style="text-align: center;">
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">推广二维码背景图</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('fenxiao[bgimg]',$set['fenxiao']['bgimg'])}
+                    <div class='help-block'>建议尺寸 1080*1716 像素</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">提现设置</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">提现方式：</label>
+                <div class="col-sm-9" style="line-height: 34px;">
+                    <input type="radio" name="cash[type]" {if empty($set['cash']['type'])}checked {/if} value="0">零钱到账
+                    <input type="radio" name="cash[type]" {if $set['cash']['type']==1}checked {/if} value="1">收款码收款
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">满多少需审核</label>
+                <div class="col-sm-2">
+                    <input class='form-control' name='cash[max]' value="{$set[cash]['max']}">
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">满多少可提现</label>
+                <div class="col-sm-2">
+                    <input class='form-control' name='cash[min]' value="{$set[cash]['min']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">提现手续费%</label>
+                <div class="col-sm-2">
+                    <input class='form-control' name='cash[fee]' value="{$set[cash]['fee']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商户支付证书</label>
+                <div class="col-sm-8 col-xs-12">
+                    <textarea class="form-control" name="apiclient_cert" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                    <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>apiclient_cert.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">支付证书私钥</label>
+                <div class="col-sm-8 col-xs-12">
+                    <textarea class="form-control" name="apiclient_key" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                    <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>apiclient_key.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default set_div">
+        <div class="panel-heading">公众号</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">引导关注：</label>
+                <div class="col-sm-9" style="line-height: 34px;">
+                    <input type="radio" name="gzh[switch]" {if empty($set['gzh']['switch'])}checked {/if} value="0">开启
+                    <input type="radio" name="gzh[switch]" {if $set['gzh']['switch']==1}checked {/if} value="1">关闭
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">引导图</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('gzh[leadimg]',$set['gzh']['leadimg'])}
+                    <div class='help-block'>建议尺寸 293*136 像素</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">提示图</label>
+                <div class="col-sm-9">
+                    {php echo tpl_form_field_image('gzh[showimg]',$set['gzh']['showimg'])}
+                    <div class='help-block'>建议尺寸 1004*1629 像素</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input name="submit" type="button" id="submit_info" value="提交" class="btn btn-primary" />
+    <!-- <a class="btn btn-danger" id="init" >一键初始化</a> -->
+
+    <input type="hidden" name="token" value="{$_W['token']}" />
+
+</form>
+<script type="text/javascript">
+$(function(){
+    $("#submit_info").click(function(){
+        $.ajax({
+            type: "POST",
+            url: "{php echo $this->createWebUrl('setting',array('act'=>submit));php}",
+            data: $('#form1').serialize(),
+            dataType: "json",
+            success: function(data){
+                alert('编辑成功');
+            }
+        });
+    });
+
+});
+</script>
+</div>
+{template 'common/footer'}

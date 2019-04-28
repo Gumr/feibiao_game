@@ -1,0 +1,197 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">用户管理</a></li>
+    <li class=""><a href="{php echo $this->createWebUrl('fictitious')}">虚拟用户管理</a></li>
+
+</ul>
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="member">
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-1 control-label">用户昵称</label>
+        <div class="col-sm-2 col-xs-12">
+            <input type="text" class="form-control" name="nickname"  value="{$nickname}" />
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+        </div>
+    </div>
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">用户id</th>
+                <th style="width:80px;">用户昵称</th>
+                <th style="width:70px;">头像</th>
+                <th style="width:80px;">账户余额<a href="{php echo $this->createWeburl('member', array('op' => 'money_sort'));}">↑</a><a href="{php echo $this->createWeburl('member', array('op' => 'money_r_sort'));}">↓</a></th>
+                <th style="width:80px;">活力币<a href="{php echo $this->createWeburl('member', array('op' => 'currency_sort'));}">↑</a><a href="{php echo $this->createWeburl('member', array('op' => 'currency_r_sort'));}">↓</a></th>
+                <th style="width:80px;">领取红包个数<a href="{php echo $this->createWeburl('member', array('op' => 'redPackets_sort'));}">↑</a><a href="{php echo $this->createWeburl('member', array('op' => 'redPackets_r_sort'));}">↓</a></th>
+                <th style="width:80px;">邀请数量<a href="{php echo $this->createWeburl('member', array('op' => 'inviteNumber_sort'));}">↑</a><a href="{php echo $this->createWeburl('member', array('op' => 'inviteNumber_r_sort'));}">↓</a></th>
+                <th style="width:70px;">邀请人</th>
+                <th style="width:70px;">关联店铺</th>
+                <th style="width:70px;">状态</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['id']}</td>
+                <td>{$item['nickname']}</td>
+                <td><img src="{$item['head']}" width="39px" height="39px"></td>
+                <td>{$item['money']}</td>
+                <td>
+                    {if $item['currency'] != '0.00'}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'currency', 'id' => $item['id']));}">
+                        {$item['currency']}
+                        </a>
+                    {else}
+                    0
+                    {/if}
+                </td>
+                <td>
+                    {if $item['red_packets']}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'red_packets', 'id' => $item['id']));}">
+                        {$item['red_packets']}
+                    </a>
+                    {else}
+                    0
+                    {/if}
+                </td>
+                <td>
+                    {if $item['invite_number']}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'invite_number', 'id' => $item['id']));}">
+                        {$item['invite_number']}
+                    </a>
+                    {else}
+                    0
+                    {/if}
+                </td>
+                <td>{php echo $item['invite_people']['nickname'] ? : "未邀请" }</td>
+                <td>
+                    {if $item['shop_id'] > 0}
+                    {$item['shop']['shop_name']}
+                    {else}
+                    未绑定
+                    {/if}
+                </td>
+                <td>{php echo $item['status'] == 1 ? '正常' : '拉黑'}</td>
+
+                <td>
+                    {if $item['shop_id'] > 0}
+                    <a href="javascript:;" data-id="{$item['id']}">商户管理</a>
+                    <a href="javascript:;" class="cancel" data-id="{$item['id']}">取消关联</a>
+                    {else}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'shop', 'id' => $item['id']));}">关联店铺</a>
+                    {/if}
+
+                    {if $item['status'] ==1}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'shielding', 'id' => $item['id']));}">拉黑</a>
+                    {else}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'cancel', 'id' => $item['id']));}">取消拉黑</a>
+                    {/if}
+
+                    {if $item['salesman']['member_id'] >= 1}
+                    {if $item['salesman']['mobile'] != ''}
+                    <a href="javascript:;" data-id="{$item['id']}"  style="color: #4c12fb">客户经理</a>
+                    {else}
+                    <a href="javascript:;" data-id="{$item['id']}" class="settings" data-toggle="modal" data-target="#myModal"  style="color: #4c12fb">设为客户经理</a>
+                    {/if}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'cancel_salesman', 'id' => $item['id']));}"  style="color: red;">取消客户经理</a>
+                    {/if}
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    <div class="ding" style="text-align: right">共有{php echo $total ? : 0}个用户</div>
+    {$pager}
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    设为客户经理
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-12 col-xs-12">
+                    客户经理姓名： <input type="text" class="form-control" name="username"  value="请输入姓名" />
+                </div>
+                <div class="col-sm-12 col-xs-12">
+                    联系方式: <input type="text" class="form-control" name="mobile"  value="请输入电话号码" />
+                </div>
+                <div class="col-sm-12 col-xs-12" style="display: none">
+                    用户id: <input type="text" class="form-control" name="id"  value="" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="submitSalesman"> 提交更改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    $(function () {
+        $('.settings').click(function () {
+            id = $(this).data('id');
+            $("input[name='id']").val(id);
+        })
+        $('#submitSalesman').click(function () {
+            var id = $("input[name='id']").val();
+            var username = $("input[name='username']").val();
+            var mobile = $("input[name='mobile']").val();
+            $.post('', {id:id,username:username,mobile:mobile, op:'submitSalesman'}, function (data) {
+                if (data.status == 1) {
+                    alert('设置成功');
+                    location.href = location.href;
+                } else {
+                    alert('设置客户经理失败');
+                }
+            }, 'json')
+        })
+        $('.cancel').click(function () {
+            if (!confirm('确认要取消该关联店铺')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'cancel_shop'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+
+    });
+
+</script>

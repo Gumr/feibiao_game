@@ -1,0 +1,114 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWeburl('advertisement', array('op' => 'home'));}">{$position}</a></li>
+
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告位置:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <select class="select valid" name="position" size="1" aria-invalid="false" style="width: 150px;">
+                {loop $position_define['other'] $itemp}
+                <option  value="{$itemp['position']}" {if $category['states'] == $index}selected="selected"{/if}>{$itemp['msg']}</option>
+                {/loop}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="mode">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">形式:</label>
+        <div class="col-sm-9 col-xs-12">
+            <label class="radio-inline">
+                <input type="radio" name="mode" value="1" checked /> 自定义
+            </label>
+            <label class="radio-inline" >
+                <input type="radio" name="mode" value="2"  />流量组
+            </label>
+        </div>
+    </div>
+    <div class="form-group" id="mode_one">
+    <div class="form-group" id="ling-1">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">图标:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            {php echo tpl_form_field_image('icon', getImage($icon['value'], true), getImage($icon['value']));}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">跳转:</label>
+        <div class="col-sm-9 col-xs-12">
+            <label class="radio-inline">
+                <input type="radio" name="type" value="1" checked /> 跳转到其他小程序
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="2" />当前小程序
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="3" />H5
+            </label>
+        </div>
+    </div>
+    <div class="form-group" id="type_isShow">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">appId<span style="color: red">*</span>:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="appid" placeholder="appId" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group" id="path" >
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">路径</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="path" placeholder="路径" value="" type="text">
+        </div>
+    </div>
+    </div>
+    <div class="form-group" id="mode_two" style="display: none">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">流量组</label>
+            <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+                <input class="form-control" name="flow_group_id" placeholder="流量组" value="" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="{$op}">
+            <input type="submit" name="submit" id="submit" value="保存" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+
+<script>
+    $(function () {
+        $("select[name='position']").click(function () {
+            if ($(this).val() == 8) {
+                $('#mode').hide();
+                $('#mode_one').show();
+            } else {
+                $('#mode').show();
+            }
+        });
+        $("input[name='type']").click(function () {
+            if ($(this).val() == 1) {
+                $('#type_isShow').show();
+                //$('#path').hide();
+            } else {
+                $('#path').show();
+                $('#type_isShow').hide();
+            }
+        });
+
+        $("input[name='mode']").click(function () {
+            if ($(this).val() == 1) {
+                $('#mode_one').show();
+                $('#mode_two').hide();
+            } else {
+                $('#mode_two').show();
+                $('#mode_one').hide();
+            }
+        });
+
+    })
+</script>

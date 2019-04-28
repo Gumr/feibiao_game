@@ -1,0 +1,18 @@
+安装说明：
+
+1.将we7_181包里的全部文件权限压缩，放于网站站点目录解压
+
+2.使用phpmyadmin等mysql工具导入数据库文件we7_181.sql
+
+3.修改微擎根目录文件data/config.php参数对接数据库
+
+$config['db']['master']['host'] = '127.0.0.1';
+$config['db']['master']['username'] = 'we7';（你的数据库用户名）
+$config['db']['master']['password'] = '123';（你的数据库密码）
+$config['db']['master']['port'] = '3306';
+$config['db']['master']['database'] = 'we7';（你的数据库名）
+$config['db']['master']['charset'] = 'utf8';
+$config['db']['master']['pconnect'] = 0;
+$config['db']['master']['tablepre'] = 'ims_';
+
+

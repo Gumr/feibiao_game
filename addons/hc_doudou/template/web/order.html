@@ -1,0 +1,158 @@
+{template 'common/header'}
+<div class="clearfix">
+<style type="text/css">
+    .trbody td {text-align: center; vertical-align:top;border-left:1px solid #ccc; border-bottom: 1px solid #ddd;}
+	.order-rank img{width:16px; height:16px;}
+	.js-remark,.js-admin-remark{word-break:break-all; overflow:hidden; background: #FDEEEE;color: #ED5050;padding: 5px 10px;}
+	td.goods-info{position:relative; padding-left:60px;}
+	.goods-info .img{position:absolute;top:50%; margin-top:-25px; background: url(http://demo.weliam.cn/addons/feng_fightgroups/web/resource/images/loading.gif) center center no-repeat; width:50px;height:50px; }
+	.goods-info span {overflow: hidden;text-overflow: ellipsis;display: block;height:50px;}
+	.status-text{cursor:pointer;}
+	.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {border-top: 1px solid rgba(221, 221, 221, 0);}
+	.panel-body{padding:0;}
+	.nav-tabs>li>a{margin-right:0;}
+    td{vertical-align: middle !important}
+</style>
+<ul class="nav nav-tabs">
+	<li {if empty($status)}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('order')}">全部订单</a>
+    </li>
+    <li {if $status==1}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('order',array('status'=>1))}">待发货</a>
+    </li>
+    <li {if $status==2}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('order',array('status'=>2))}">已发货</a>
+    </li>
+</ul>
+<div class="panel">
+<div class="panel-body">
+	<form action="" method="get" class="form-horizontal" role="form" id="form1">
+		<input type="hidden" name="c" value="site">
+        <input type="hidden" name="a" value="entry">
+        <input type="hidden" name="m" value="hc_doudou">
+        <input type="hidden" name="do" value="order">
+		<div class="form-group">
+                <div class="col-md-2">
+                    <select name="keywordtype" class="form-control">
+                    	<option value="">关键字类型</option>
+                        <option value="1" {if $keywordtype==1}selected{/if}>订单号</option>
+                        <option value="2" {if $keywordtype==2}selected{/if}>OPENID</option>
+                        <option value="3" {if $keywordtype==3}selected{/if}>商品名称</option>
+                        <option value="4" {if $keywordtype==4}selected{/if}>商品ID</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+					<div class="input-group">
+						<input type="text" name="keyword" class="form-control" value="{$keyword}" placeholder="请输入关键字">
+						<span class="input-group-addon" id="search">搜索</span>
+					</div>
+				</div>
+			</div>
+        </form>
+    </div>
+</div>
+
+	<script type="text/javascript">
+		$("#search").click(function(){
+			$('#form1')[0].submit();
+		})
+	</script>
+
+	<div class="order-list">
+		<div class="panel-body table-responsive collapse in" id="order-template-item-4" style="padding: 0;">
+			<table class="table table-bordered">
+				<thead style="background-color: #FFFFFF;">
+					<tr>
+						<th style="width:10%">ID</th>
+						<th style="width:20%;">商品</th>
+						<th style="width:10%;">型号</th>
+						<th style="width:20%; text-align:center;">买家</th>
+						<th style="width:10%; text-align:center;">订单状态</th>
+						<th style="width:10%; text-align:center;">金额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+		<div class="panel panel-default">
+			{loop $list $index $item}
+			<div class="panel-heading clearfix" style="padding: 10px 15px;">
+				<div class="pull-left">
+					<b>商户单号: {$item['trade_no']}</b>
+				</div>
+				<div class="pull-right">
+					<span class="text-muted"></span>&nbsp;&nbsp;
+					<a href="{php echo $this->createWebUrl('order_post',array('trade_no'=>$item['trade_no']))}" >查看详情</a>
+				</div>
+			</div>
+			<div class="panel-body table-responsive" style="padding: 0px;">
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td style="width: 10%;">
+								<center>{$item['gid']}</center>
+							</td>
+							<td class="goods-info line-feed" style="width:20%;">
+								<div class="img">
+									<img width="50" height="50" class="scrollLoading" src="{media $item['goodsthumb']}" data-url="{media $item['goodsthumb']}" onerror="this.src='/web/resource/images/nopic-small.jpg'">
+								</div>
+								<div class="title" style="padding-left: 60px;">
+									<span>{$item['title']}</span>
+								</div>
+							</td>
+							<td class="goods-info line-feed" style="width:10%;">
+								<div class="title">
+									<span>{$item['model']}</span>
+								</div>
+							</td>
+							<td class="goods-info line-feed" style="width:20%;">
+								<div class="img">
+									<img width="50" height="50" class="oscrollLoading" src="{media $item['avatar']}" data-url="{media $item['avatar']}" onerror="this.src='/web/resource/images/nopic-small.jpg'">
+								</div>
+								<div class="title"  style="padding-left: 60px;">
+									<span>{$item['nickname']}</span>
+								</div>
+							</td>
+							<td class="text-center" style="width:10%;">
+								{if $item['status']==1}
+									<span class="label label-warning">待发货</span>
+								{elseif $item['status']==2}
+									<span class="label label-success">已发货</span>
+								{/if}
+							</td>
+							<td class="text-center" style="width:10%;">
+								{$item['price']}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="panel-heading clearfix" style="padding: 10px 15px;">
+				<div class="pull-left">下单时间：{php echo date('Y-m-d H:i:s',$item['createtime']);}</div>
+				<div class="pull-right">OPENID：{$item['openid']}</div>
+			</div>
+			{/loop}
+		</div>
+		<div id="de1" style="margin-top: 15px;">
+			{$page}
+		</div>
+
+</div>
+{template 'common/footer'}
+
+<script type="text/javascript">
+$(".exprecode").blur(function(){
+
+	var code = $(this).val();
+	var id = $(this).attr('data-id');
+    $.ajax({
+	    type: "POST",
+	    url: "{php echo $this->createWebUrl('Order_post',array('act'=>'addexprecode'));php}",
+	    data: {id:id,code:code},
+	    dataType: "json",
+	    success: function(data){
+	        alert('编辑成功');
+	    }
+	});
+})
+</script>

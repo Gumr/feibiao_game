@@ -1,0 +1,70 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">商户管理</a></li>
+    <li class=""><a href="{php echo $this->createWeburl('shop', array('op' => 'addshow'));}">添加商户</a></li>
+</ul>
+
+
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">商户id</th>
+                <th style="width:70px;">商户名称</th>
+                <th style="width:70px;">位置</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['id']}</td>
+                <td>{$item['shop_name']}</td>
+                <td>{$item['locality']}</td>
+                <td>
+                    <a href="{php echo $this->createWeburl('shop', array('op' => 'editshow', 'id' => $item['id']));}">编辑</a>
+                    <a href="javascript:;" data-id="{$item['id']}" class="delete">删除</a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

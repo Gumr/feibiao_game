@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.8,1.0">
+	<application setting="false">
+		<name><![CDATA[天天步数]]></name>
+		<identifie><![CDATA[bh_step]]></identifie>
+		<version><![CDATA[4.0.9]]></version>
+		<type><![CDATA[other]]></type>
+		<ability><![CDATA[天天步数]]></ability>
+		<description><![CDATA[天天步数]]></description>
+		<author><![CDATA[小菜网络]]></author>
+		<url><![CDATA[https://www.xiaocaiit.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports><item type="wxapp" /></supports>
+		<plugin-main name="0" />
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="基本设置" do="config" state="" direct="false" />
+			<entry title="用户管理" do="member" state="" direct="false" />
+			<entry title="商品分类" do="category" state="" direct="false" />
+			<entry title="商品管理" do="goods" state="" direct="false" />
+			<entry title="兑换订单" do="order" state="" direct="false" />
+			<entry title="广告管理" do="advertisement" state="" direct="false" />
+			<entry title="任务管理" do="task" state="" direct="false" />
+			<entry title="资金日志" do="money_log" state="" direct="false" />
+			<entry title="常见问题" do="question" state="" direct="false" />
+			<entry title="店铺管理" do="shop" state="" direct="false" />
+			<entry title="提现管理" do="cash" state="" direct="false" />
+		</menu>
+		<page>
+			<entry title="首页" do="/bh_step/pages/index/index" state="" direct="false" />
+		</page>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[m_install.php]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_bh_st_address`;
+DROP TABLE IF EXISTS `ims_bh_st_bag`;
+DROP TABLE IF EXISTS `ims_bh_st_cash_pwd`;
+DROP TABLE IF EXISTS `ims_bh_st_category`;
+DROP TABLE IF EXISTS `ims_bh_st_config`;
+DROP TABLE IF EXISTS `ims_bh_st_currency`;
+DROP TABLE IF EXISTS `ims_bh_st_currency_log`;
+DROP TABLE IF EXISTS `ims_bh_st_form_id`;
+DROP TABLE IF EXISTS `ims_bh_st_goods`;
+DROP TABLE IF EXISTS `ims_bh_st_goods_fictitious`;
+DROP TABLE IF EXISTS `ims_bh_st_goods_give`;
+DROP TABLE IF EXISTS `ims_bh_st_goods_share`;
+DROP TABLE IF EXISTS `ims_bh_st_jump`;
+DROP TABLE IF EXISTS `ims_bh_st_member`;
+DROP TABLE IF EXISTS `ims_bh_st_member_voucher`;
+DROP TABLE IF EXISTS `ims_bh_st_merchant`;
+DROP TABLE IF EXISTS `ims_bh_st_money_log`;
+DROP TABLE IF EXISTS `ims_bh_st_my_voucher`;
+DROP TABLE IF EXISTS `ims_bh_st_order`;
+DROP TABLE IF EXISTS `ims_bh_st_pay_order`;
+DROP TABLE IF EXISTS `ims_bh_st_question`;
+DROP TABLE IF EXISTS `ims_bh_st_remind`;
+DROP TABLE IF EXISTS `ims_bh_st_resource`;
+DROP TABLE IF EXISTS `ims_bh_st_share_group`;
+DROP TABLE IF EXISTS `ims_bh_st_shop`;
+DROP TABLE IF EXISTS `ims_bh_st_signin`;
+DROP TABLE IF EXISTS `ims_bh_st_task`;
+DROP TABLE IF EXISTS `ims_bh_st_task_member`;
+DROP TABLE IF EXISTS `ims_bh_st_today`;
+DROP TABLE IF EXISTS `ims_bh_st_token`;
+DROP TABLE IF EXISTS `ims_bh_st_withdrawals`;
+]]></uninstall>
+	<upgrade><![CDATA[m_upgrade.php]]></upgrade>
+</manifest>

@@ -1,0 +1,109 @@
+{template 'common/header'}
+<style type="text/css">
+    .table>tbody>tr>td{vertical-align: middle; }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+        参与记录
+        </h3>
+    </div>
+    
+    <div class="panel-body">
+        <form action="" method="get" class="form-horizontal" role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="font-size:20px">累计充值：{$total_fee}</div>
+
+                <div class="panel panel-default" style="margin: 10px;padding: 10px;">
+                    <span style="display: inline-block;width: 33%;border-right: 1px solid;font-size: 20px;text-align: center">待支付<b> {$daizhifu_fee}</b></span>
+                    <span style="display: inline-block;width: 33%;border-right: 1px solid;font-size: 20px;text-align: center">已支付<b> {$yizhifu_fee}</b></span>
+                    <span style="display: inline-block;width: 33%;font-size: 20px;text-align: center">转入<b> {$zhuanru_fee}</b></span>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" name="c" value="site">
+                    <input type="hidden" name="a" value="entry">
+                    <input type="hidden" name="m" value="hc_doudou">
+                    <input type="hidden" name="do" value="recharge">
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">起止日期</label>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                {php echo tpl_form_field_date('start', $value = $start, $withtime = false);}
+                            </div>
+                        </div>
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">结束日期</label>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                {php echo tpl_form_field_date('end', $value = $end, $withtime = false);}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">支付状态</label>
+                        <div class="col-md-3">
+                            <select name="status" class="form-control">
+                                <option value="">全部</option>
+                                <option {if $status==1} selected="" {/if}value="1">已支付</option>
+                                <option {if $status==2} selected="" {/if}value="2">收益转入</option>
+                                <option {if $status==3} selected="" {/if}value="3">未支付</option>
+                            </select>
+                        </div>
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">充值单号</label>
+                        <div class="col-xs-12 col-sm-4 col-lg-4">
+                            <input class="form-control" name="keyword" type="text" value="{$keyword}" placeholder="充值单号">
+                        </div>
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+                        <div class=" col-xs-12 col-sm-2 col-lg-2">
+                            <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive panel-body">
+            <table class="table table-hover">
+                <thead class="navbar-inner">
+                <tr>
+                    <th style="text-align:center;">充值单号</th>
+                    <th style="text-align:center;">用户</th>
+                    <th style="text-align:center;">充值金额</th>
+                    <th style="text-align:center;">实际支付</th>
+                    <th style="text-align:center;">状态</th>
+                    <th style="text-align:center;">支付时间</th>
+                </tr>
+                </thead>
+                <tbody id="level-list">
+                {loop $list $index $item}
+                 <tr>
+                     <td style="text-align:center;"><div class="type-parent">{$item['trade_no']}</div></td>
+                     <td>
+                        <div class="type-parent">
+                            <img src="{$item['avatar']}" style="width: 50px">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            {$item['nickname']}
+                        </div>
+                     </td>
+                     <td style="text-align:center;"><div class="type-parent">{$item['money']}</div></td>
+                     <td style="text-align:center;"><div class="type-parent">{$item['total_fee']}</div></td>
+                     <td style="text-align:center;">
+                        <div class="type-parent">
+                            {if $item['status']==1}
+                                已支付
+                            {elseif $item['status']==2}
+                                收益转入
+                            {else}
+                                待支付
+                            {/if}
+                        </div>
+                     </td>
+                     <td style="text-align:center;"><div class="type-parent">{php echo date('Y-m-d H:i',$item['paytime'])}</div></td>
+                </tr>
+                {/loop}     
+                </tbody>
+            </table>
+             {$page}   
+        </div>
+    </div>
+</div>
+
+{template 'common/footer'}

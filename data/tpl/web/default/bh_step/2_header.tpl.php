@@ -1,0 +1,2 @@
+<?php defined('IN_IA') or exit('Access Denied');?><?php  global $_GPC, $_W;?>
+<?php (!empty($this) && $this instanceof WeModuleSite || 1) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>

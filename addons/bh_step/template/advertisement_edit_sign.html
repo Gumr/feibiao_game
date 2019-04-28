@@ -1,0 +1,121 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWeburl('advertisement', array('op' => 'home'));}">{$position}</a></li>
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告位置:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <select class="select valid" id="position" name="position" size="1" aria-invalid="false" style="width: 150px;">
+                {loop $position_define['sign'] $itemp}
+                <option disabled="disabled"  value="{$itemp['position']}" {if $itemp['position'] == $data['position']}selected="selected"{/if}>{$itemp['msg']}</option>
+                {/loop}
+            </select>
+        </div>
+    </div>
+    {if $data['position']==5}
+    <div class="form-group" id="is_mode_two">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">形式:</label>
+            <div class="col-sm-9 col-xs-12">
+                <label class="radio-inline">
+                    <input type="radio" name="mode" value="1" {if $data['mode'] == 1} checked {/if}   /> 自定义
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="mode" value="2" {if $data['mode'] == 2} checked {/if} />流量组
+                </label>
+            </div>
+        </div>
+    </div>
+    {/if}
+    <div id="is_mode_one" {if $data['mode'] !=1} style="display:none" {/if}>
+    <div id="mode_one" >
+    <div class="form-group" id="ling-1">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">图标:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            {php echo tpl_form_field_image('icon', getImage($data['icon'], true), getImage($data['icon_path']));}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否跳转到其他程序</label>
+        <div class="col-sm-9 col-xs-12">
+            <label class="radio-inline">
+                <input type="radio" name="type" value="1" {if $data['type'] == 1} checked {/if} /> 跳转
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="2"  {if $data['type'] == 2} checked {/if}/>当前小程序
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="3"  {if $data['type'] == 3} checked {/if}/>H5
+            </label>
+        </div>
+    </div>
+    <div class="form-group" id="type_isShow" {if $data['type'] == 2} style="display: none" {/if}>
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">appId<span style="color: red">*</span>:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="appid" placeholder="appId" value="{$data['appid']}" type="text">
+        </div>
+    </div>
+    <div class="form-group" id="path" >
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">路径</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="path" placeholder="路径" value="{$data['path']}" type="text">
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="form-group" id="mode_two" {if $data['mode'] !=2} style="display:none" {/if}>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">流量组</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="flow_group_id" placeholder="流量组" value="{$data['flow_group_id']}" type="text">
+        </div>
+    </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="sign_edit">
+            <input type="hidden" name="mode" value="1">
+            <input type="submit" name="submit" id="submit" value="保存" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+
+<script>
+    $(function () {
+     /*   $("select[name='position']").click(function () {
+            var position_id = $(this).val();
+            if (position_id == 5) {
+                $("#is_mode_two").show();
+            } else {
+                $("#is_mode_two").hide();
+            }
+        });*/
+
+        $("input[name='type']").click(function () {
+            if ($(this).val() == 1) {
+                $('#type_isShow').show();
+                //$('#path').hide();
+            } else {
+                $('#path').show();
+                $('#type_isShow').hide();
+            }
+        });
+
+        $("input[name='mode']").click(function () {
+            if ($(this).val() == 1) {
+                $('#is_mode_one').show();
+                $('#mode_two').hide();
+            } else {
+                $('#mode_two').show();
+                $('#is_mode_one').hide();
+                $("input[name='mode']").val(2);
+            }
+        });
+
+    })
+</script>

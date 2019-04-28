@@ -1,0 +1,33 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">添加商品兑换记录</a></li>
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">商品id</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="goods_id" placeholder="商品id" value="{$goods['id']}" type="text">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">购买用户</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <select class="select valid" name="member_id" size="1" aria-invalid="false" style="width: 150px;">
+                <option  value="0">请选择</option>
+                {loop $member $item}
+                <option  value="{$item['id']}">{$item['nickname']}</option>
+                {/loop}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="add">
+            <input type="submit" name="submit" id="submit" value="添加" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}

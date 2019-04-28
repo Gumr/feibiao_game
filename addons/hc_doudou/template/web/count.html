@@ -1,0 +1,91 @@
+{template 'common/header'}
+<style type="text/css">
+    .table>tbody>tr>td{vertical-align: middle; }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+        参与记录
+        </h3>
+    </div>
+    
+    <div class="panel-body">
+        <form action="" method="get" class="form-horizontal" role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading">累计消费：{$total_price}</div>
+                <div class="panel-body">
+                        <input type="hidden" name="c" value="site">
+                        <input type="hidden" name="a" value="entry">
+                        <input type="hidden" name="m" value="hc_doudou">
+                        <input type="hidden" name="do" value="count">
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">状态</label>
+                            <div class="col-md-3">
+                                <select name="type" class="form-control">
+                                    <option value="">全部</option>
+                                    <option {if $type==1} selected="" {/if}value="1">已中奖</option>
+                                    <option {if $type==2} selected="" {/if}value="2">未中奖</option>
+                                </select>
+                            </div>
+                            <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                            <div class="col-xs-12 col-sm-4 col-lg-4">
+                                <input class="form-control" name="keyword" type="text" value="{$keyword}" placeholder="订单编号">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+                            <div class=" col-xs-12 col-sm-2 col-lg-2">
+                                <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive panel-body">
+            <table class="table table-hover">
+                <thead class="navbar-inner">
+                <tr>
+                    <th style="text-align:center;">订单编号</th>
+                    <th style="text-align:center;">参与人</th>
+                    <th style="text-align:center;">商品</th>
+                    <th style="text-align:center;">金额</th>
+                    <th style="text-align:center;">状态</th>
+                    <th style="text-align:center;">参与时间</th>
+                </tr>
+                </thead>
+                <tbody id="level-list">
+                {loop $list $index $item}
+                 <tr>
+                     <td style="text-align:center;"><div class="type-parent">{$item['trade_no']}</div></td>
+                     <td>
+                        <div class="type-parent">
+                            <img src="{$item['avatar']}" style="width:40px;height:40px"/>
+                            {$item['nickname']}
+                        </div>
+                     </td>
+                     <td style="text-align:center;">
+                        <div class="type-parent">
+                            <img src="{$item['goodsthumb']}" style="width:40px;height:40px"/>
+                            {$item['title']}
+                        </div>
+                    </td>
+                     <td style="text-align:center;"><div class="type-parent">{$item['price']}</div></td>
+                     <td style="text-align:center;">
+                        <div class="type-parent">
+                            {if $item['type']==1}
+                                中奖
+                            {else}
+                                未中奖
+                            {/if}
+                        </div>
+                     </td>
+                     <td style="text-align:center;"><div class="type-parent">{php echo date('Y-m-d H:i',$item['createtime'])}</div></td>
+                </tr>
+                {/loop}     
+                </tbody>
+            </table>
+             {$page}   
+        </div>
+    </div>
+</div>
+
+{template 'common/footer'}

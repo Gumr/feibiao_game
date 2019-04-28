@@ -1,0 +1,54 @@
+{template 'common/header'}
+<div class="clearfix">
+<ul class="nav nav-tabs">
+	<li >
+        <a href="{php echo $this->createWebUrl('Users',array('level'=>$l,'keyword'=>$k,'page'=>$p))}" style="background-color: #428bca">返回列表页</a>
+    </li>
+	<li >
+        <a style="background-color: #ddd"><b>{$nickname}</b> 的佣金</a>
+    </li>
+    <li {if $level==1}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('userdo',array('act'=>'commission','uid'=>$uid,'level'=>1,'l'=>$l,'k'=>$k,'p'=>$p))}">一级</a>
+    </li>
+    <li {if $level==2}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('userdo',array('act'=>'commission','uid'=>$uid,'level'=>2,'l'=>$l,'k'=>$k,'p'=>$p))}">二级</a>
+    </li>
+    <li {if $level==3}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('userdo',array('act'=>'commission','uid'=>$uid,'level'=>3,'l'=>$l,'k'=>$k,'p'=>$p))}">三级</a>
+    </li>
+</ul>
+	<div class="table-responsive panel-body">
+         <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th>id</th>
+                <th>头像</th>
+                <th>用户名</th>
+                <th>金额</th>
+                <th>明细</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+            <tbody id="level-list">
+            {loop $list $index $item}
+             <tr>
+                 <td><div class="type-parent">{$item['id']}</div></td>
+                 <td><div class="type-parent"><img src="{$item[user]['avatar']}" style="width:40px;height:40px"/></div></td>
+                 <td>
+                    <div class="type-parent">
+                        {$item[user]['nickname']}
+                        <br/>
+                        <mark>{$item[user]['openid']}</mark>
+                    </div>
+                 </td>
+                 <td><div class="type-parent">{$item['profit']}</div></td>
+                 <td><div class="type-parent">{$item['price']} * {$item['rate']}% = {$item['profit']}</div></td>
+                 <td><div class="type-parent">{php echo date('Y-m-d H:i',$item['createtime'])}</div></td>
+            </tr>
+            {/loop}     
+            </tbody>
+        </table>
+         {$page}   
+    </div>
+</div>
+{template 'common/footer'}

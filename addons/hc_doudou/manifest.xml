@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.8,1.0">
+	<application setting="false">
+		<name><![CDATA[抖抖赢口红]]></name>
+		<identifie><![CDATA[hc_doudou]]></identifie>
+		<version><![CDATA[1.2.4]]></version>
+		<type><![CDATA[activity]]></type>
+		<ability><![CDATA[抖抖赢口红]]></ability>
+		<description><![CDATA[抖抖赢口红]]></description>
+		<author><![CDATA[小菜网络]]></author>
+		<url><![CDATA[https://www.xiaocaiit.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports><item type="wxapp" /></supports>
+		<plugin-main name="0" />
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="升级记录" do="upgrade" state="8" direct="false" />
+			<entry title="审核设置" do="checkgoods" state="7" direct="false" />
+			<entry title="充值记录" do="recharge" state="5" direct="false" />
+			<entry title="发货管理" do="order" state="5" direct="false" />
+			<entry title="参与记录" do="count" state="4" direct="false" />
+			<entry title="商品管理" do="goods" state="3" direct="false" />
+			<entry title="用户管理" do="users" state="2" direct="false" />
+			<entry title="基础设置" do="setting" state="1" direct="false" />
+			<entry title="提现管理" do="cash" state="9" direct="false" />
+			<entry title="公告管理" do="notice" state="10" direct="false" />
+		</menu>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[m_install.php]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_hcdoudou_address`;
+DROP TABLE IF EXISTS `ims_hcdoudou_cash`;
+DROP TABLE IF EXISTS `ims_hcdoudou_checkgoods`;
+DROP TABLE IF EXISTS `ims_hcdoudou_commission`;
+DROP TABLE IF EXISTS `ims_hcdoudou_goods`;
+DROP TABLE IF EXISTS `ims_hcdoudou_guan`;
+DROP TABLE IF EXISTS `ims_hcdoudou_nexus`;
+DROP TABLE IF EXISTS `ims_hcdoudou_notice`;
+DROP TABLE IF EXISTS `ims_hcdoudou_order`;
+DROP TABLE IF EXISTS `ims_hcdoudou_paylog`;
+DROP TABLE IF EXISTS `ims_hcdoudou_setting`;
+DROP TABLE IF EXISTS `ims_hcdoudou_upgrade`;
+DROP TABLE IF EXISTS `ims_hcdoudou_users`;
+]]></uninstall>
+	<upgrade><![CDATA[m_upgrade.php]]></upgrade>
+</manifest>

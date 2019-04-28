@@ -1,0 +1,66 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('task');}">任务管理</a></li>
+    <li class="active"><a href="javascript:;">添加任务</a></li>
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="nickname" placeholder="昵称" value="{$memberData['nickname']}" type="text">
+        </div>
+    </div>
+    <div class="form-group" id="ling-1">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">头像:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            {php echo tpl_form_field_image('head', $memberData['head']);}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">活力币</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="currency" placeholder="活力币" value="{$memberData['currency']}" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="edit">
+            <input type="hidden" name="id" value="{$memberData['id']}">
+            <input type="submit" name="submit" id="submit" value="保存" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+<link rel="stylesheet" type="text/css" href="{$siteRoot}addons/{$modular_name}/template/js/webuploader/css/globle.css?1" />
+<script type="text/javascript" src="{$siteRoot}addons/{$modular_name}/template/js/webuploader/js/webuploader.min.js"></script>
+
+<script>
+    $(function () {
+        $("input[name='type']").click(function () {
+            if ($(this).val() == 1) {
+                $('#type_isShow').show();
+                $('#path').hide();
+            } else {
+                $('#path').show();
+                $('#type_isShow').hide();
+            }
+        });
+
+        //封面
+        var ling = new WebUploader.Uploader({
+            auto : true,
+            server : '{$upload}',
+            pick : '#filePicker1',
+            extensions: 'gif,jpg,jpeg,bmp,png'
+            // 其他配置项
+        });
+        ling.on('uploadSuccess', function(file, data) {
+            $('#icon_image').val(data.info);
+            $.post('{$image}', {id : data.info}, function (data) {
+                $('#adv-img1').attr('src', data.info);
+            }, 'json');
+        });
+    })
+</script>

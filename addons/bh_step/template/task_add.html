@@ -1,0 +1,95 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('task');}">任务管理</a></li>
+    <li class="active"><a href="javascript:;">添加任务</a></li>
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">标题:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="title" placeholder="标题" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">简短描述:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="describe" placeholder="简短描述" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group" id="ling-1">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">图标:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            {php echo tpl_form_field_image('icon', getImage($icon['value'], true), getImage($icon['value']));}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">活力币</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="currency" placeholder="活力币" value="" type="text">
+        </div>
+    </div>
+
+    <div class="form-group" id="type_isShow">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">appId</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="appid" placeholder="appId" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">路径</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="path" placeholder="路径" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否首页</label>
+        <div class="col-sm-9 col-xs-12">
+            <label class="radio-inline">
+                <input type="radio" name="is_home" value="1" checked /> 非首页
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="is_home" value="2" />首页
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="add">
+            <input type="submit" name="submit" id="submit" value="保存" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+<link rel="stylesheet" type="text/css" href="{$siteRoot}addons/{$modular_name}/template/js/webuploader/css/globle.css?1" />
+<script type="text/javascript" src="{$siteRoot}addons/{$modular_name}/template/js/webuploader/js/webuploader.min.js"></script>
+
+<script>
+    $(function () {
+        $("input[name='type']").click(function () {
+            if ($(this).val() == 1) {
+                $('#type_isShow').show();
+                $('#path').hide();
+            } else {
+                $('#path').show();
+                $('#type_isShow').hide();
+            }
+        });
+
+        //封面
+        var ling = new WebUploader.Uploader({
+            auto : true,
+            server : '{$upload}',
+            pick : '#filePicker1',
+            extensions: 'gif,jpg,jpeg,bmp,png'
+            // 其他配置项
+        });
+        ling.on('uploadSuccess', function(file, data) {
+            $('#icon_image').val(data.info);
+            $.post('{$image}', {id : data.info}, function (data) {
+                $('#adv-img1').attr('src', data.info);
+            }, 'json');
+        });
+    })
+</script>

@@ -1,0 +1,45 @@
+{template 'common/header'}
+<style type="text/css">
+    .table>tbody>tr>td{vertical-align: middle; }
+</style>
+<div class="clearfix">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('guan')}">关卡设置</a></li>
+    <li><a href="{php echo $this->createWebUrl('guan_post')}">编辑关卡</a></li>
+</ul>
+<div class="clearfixcon">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>             
+                        <th>关卡编号</th>
+                        <th>载入图片</th>
+                        <th>滚动图片</th>
+                        <th>道具图片</th>
+                        <th>关卡时长</th>
+                        <th style="text-align:center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody  class="che">
+                    {loop $list $index $item}
+                    <tr>
+                        <td class="text-left">{$item['sort']}</td>
+                        <td class="text-left"><img src="{$item['loadpic']}" style="width: 50px;height:50px"></td>
+                        <td class="text-left"><img src="{$item['rollpic']}" style="width: 50px;height:50px"></td>
+                        <td class="text-left"><img src="{$item['proppic']}" style="width: 50px;height:50px"></td>
+                        <td class="text-left">{$item['times']}</td>
+                        
+                        <td class="text-center">
+							<a href="{php echo $this->createWebUrl('guan_post',array('id'=>$item['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="编辑"><i class="fa fa-edit"></i></a>
+						</td>
+                    </tr>
+                    {/loop}
+                </tbody>
+            </table>
+            {$page}
+        </div>
+    </div>
+</div>
+{template 'common/footer'}

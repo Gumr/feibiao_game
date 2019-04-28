@@ -1,0 +1,82 @@
+{template 'common/header'}
+<style type="text/css">
+	.help-block{
+		color: red !important;
+	}
+</style>
+<div class="clearfix">
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('guan')}">关卡设置</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('guan_post')}">编辑关卡</a></li>
+</ul>
+<div class="clearfix">
+		<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form2">
+			<div class="panel panel-default" id="step1">
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="col-md-2 control-label">关卡编号：</label>
+						<div class="col-md-2">
+							<input class="form-control" type="text" name="sort" value="{$info['sort']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">关卡时长：</label>
+						<div class="col-md-2">
+							<input class="form-control" type="text" name="times" value="{$info['times']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">载入图片：</label>
+						<div class="col-sm-6">
+							{php echo tpl_form_field_image('loadpic',$info['loadpic']);}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">滚动图片：</label>
+						<div class="col-sm-6">
+							{php echo tpl_form_field_image('rollpic',$info['rollpic']);}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">道具图片：</label>
+						<div class="col-sm-6">
+							{php echo tpl_form_field_image('proppic',$info['proppic']);}
+						</div>
+					</div>
+					<div class="form-group">
+		                <label class="col-md-2 control-label">游戏音效：</label>
+		                <div class="col-xs-6">
+		                    {php echo tpl_form_field_audio('gamebgm',$info[gamebgm]);}
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label class="col-md-2 control-label">过关音效：</label>
+		                <div class="col-xs-6">
+		                    {php echo tpl_form_field_audio('passbgm',$info[passbgm]);}
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label class="col-md-2 control-label">失败音效：</label>
+		                <div class="col-xs-6">
+		                    {php echo tpl_form_field_audio('losebgm',$info[losebgm]);}
+		                </div>
+		            </div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label"></label>
+						<div class="col-md-9">
+							<input type="hidden" name="act" value="edit">
+							<input name="id" type="hidden" value="{$info['id']}">
+							<input name="submit" id="submit" type="submit" value="保存" class="btn btn-primary min-width">
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+</div>
+{template 'common/footer'}

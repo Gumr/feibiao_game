@@ -1,0 +1,106 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">邀请列表</a></li>
+
+</ul>
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="question">
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">用户昵称</th>
+                <th style="width:70px;">头像</th>
+                <th style="width:70px;">账户余额</th>
+                <th style="width:70px;">活力币</th>
+                <th style="width:70px;">领取红包个数</th>
+                <th style="width:70px;">邀请数量</th>
+                <th style="width:70px;">邀请时间</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['nickname']}</td>
+                <td><img src="{$item['head']}" width="60px" height="60px"></td>
+                <td>{$item['money']}</td>
+                <td>
+                    {if $item['currency']}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'currency', 'id' => $item['id']));}">
+                        {$item['currency']}
+                        </a>
+                    {else}
+                    0
+                    {/if}
+                </td>
+                <td>
+                    {if $item['red_packets']}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'currency', 'id' => $item['id']));}">
+                        {$item['red_packets']}
+                    </a>
+                    {else}
+                    0
+                    {/if}
+                </td>
+                <td>
+                    {if $item['invite_number']}
+                    <a href="{php echo $this->createWeburl('member', array('op' => 'invite_number', 'id' => $item['id']));}">
+                        {$item['invite_number']}
+                    </a>
+                    {else}
+                    0
+                    {/if}
+                </td>
+                <td>{php echo date('Y-m-d H:i:s', $item['add_time'])}</td>
+                <td>
+                    <a name="back" href="javascript:;" onclick="javascript:history.back(-1);"/>返回</a>
+                  <!--  <a href="{php echo $this->createWeburl('member', array('op' => 'editshow', 'id' => $item['id']));}">返回</a>-->
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

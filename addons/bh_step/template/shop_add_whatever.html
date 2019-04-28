@@ -1,0 +1,98 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('shop');}">商户管理</a></li>
+    <li class="active"><a href="javascript:;">添加商户</a></li>
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+
+
+    <div class="form-group" id="free">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">商户名<span style="color: red">*</span>:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="shop_name" placeholder="商户名" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">入住时间:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            {php echo _tpl_form_field_date('enter_created')}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">位置:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="locality" placeholder="位置" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">经纬度地址:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12" style="margin-top:8px">
+            <a href="https://lbs.qq.com/tool/getpoint/" target="_blank">https://lbs.qq.com/tool/getpoint/</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">经度:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            <input class="form-control" name="longitude" placeholder="经度" value="" type="text">
+        </div>
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">纬度:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            <input class="form-control" name="latitude" placeholder="纬度" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">联系电话:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            <input class="form-control" name="mobile" placeholder="联系电话" value="" type="text">
+        </div>
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">客户经理:</label>
+        <div class="col-sm-2 col-xs-2">
+            <select class="select valid" name="account_manager_id" size="1" aria-invalid="false" style="width: 150px;">
+                <option value="0">请选择客户经理</option>
+                {loop $salesman  $item}
+                <option value="{$item['id']}" >{$item['username']}</option>
+                {/loop}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">佣金比例:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            <input class="form-control" name="commission" placeholder="1%请输入1,0.5%请输入0.5" value="" type="text">
+        </div>
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">提现说明:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            <input class="form-control" name="withdraw_explain" placeholder="提现说明" value="" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">有效期至:</label>
+        <div class="col-sm-3 col-lg-3 col-md-3 col-xs-6">
+            {php echo _tpl_form_field_date('expiry_date')}
+        </div>
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态:</label>
+        <div class="col-sm-2 col-xs-2">
+            <select class="select valid" name="status" size="1" aria-invalid="false" style="width: 150px;">
+                <option value="0">商户状态状态</option>
+                {loop $status $key $item}
+                <option value="{$key}" {if $key == $order_status}selected="selected"{/if}>{$item}</option>
+                {/loop}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">商户logo:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            {php echo tpl_form_field_image('logo', getImage($logo['value'], true), getImage($logo['value']));}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="add">
+            <input type="submit" name="submit" id="submit" value="添加" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+

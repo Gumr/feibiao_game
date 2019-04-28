@@ -1,0 +1,128 @@
+{template 'header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWeburl('advertisement', array('op' => 'home'));}">修改订单</a></li>
+
+</ul>
+<form action="" method="post" class="form-horizontal" id="myform" role="form" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">商品:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" disabled="disabled" name="goods_name" placeholder="商品" value="{$order_info['goods_name']}" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">用户昵称:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" disabled="disabled" name="member_name" placeholder="用户昵称" value="{$order_info['member_name']}" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+        <div class="col-sm-9 col-xs-12">
+            <label class="radio-inline">
+                <input type="radio" name="status" value="1"  {if $order_info['status'] ==1}  checked {/if}  /> 未发货
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" value="2" {if $order_info['status'] ==2}  checked {/if}/>已发货
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" value="3" {if $order_info['status'] ==3}  checked {/if}/>已完成
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" value="4" {if $order_info['status'] ==4}  checked {/if}/>已取消
+            </label>
+        </div>
+    </div>
+    {if $order_info['status'] == 1}
+    <div class="form-group" id="courier_name_default">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递公司:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <select class="select valid" name="courier_id" size="1" aria-invalid="false" style="width: 150px;" id="select_courier_name">
+                {loop $courier_name  $key $item}
+                <option  value="{$key}"  {if $item == $order_info['courier_name']} selected="selected" {/if} >{$item}</option>
+                {/loop}
+            </select>
+            <button type="button" class="btn btn-default" id="add_courier_name">添加公司</button>
+        </div>
+    </div>
+    {/if}
+    <div class="form-group" id="courier_name_operation"  {if $order_info['status'] ==1}  style="display: none;" {/if} >
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递公司名字</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="courier_name" placeholder="快递公司名字" value="{$order_info['courier_name']}" {if $order_info['status'] !=1}  disabled="disabled" {/if}  type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">类型</label>
+        <div class="col-sm-9 col-xs-12">
+            {if $order_info['type'] ==1}
+            <label class="radio-inline">
+                <input type="radio" name="type"  value="1" checked  /> 实物
+            </label>
+            {else}
+            <label class="radio-inline">
+                <input type="radio" name="type"  value="2" checked/>虚拟
+            </label>
+            {/if}
+        </div>
+    </div>
+    {if $order_info['type'] ==2}
+    <div class="form-group" id="type_isShow">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">兑换码</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" disabled="disabled" name="fictitious" placeholder="兑换码" value="{$order_info['fictitious']}" type="text">
+        </div>
+    </div>
+    {/if}
+    {if $order_info['type'] == 1}
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">物流单号{if $order_info['type'] ==1}<span style="color: red">*</span>{/if}:</label>
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="courier_number" placeholder="物流单号" value="{$order_info['courier_number']}" type="text">
+        </div>
+    </div>
+    {/if}
+    <div class="form-group" id="path" >
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">地址</label>
+        {if $order_info['member_address']}
+            {loop $order_info['member_address'] $item}
+        <label class="radio-inline">
+            <input type="radio" name="address"  value="{$item['address']}" checked  />{$item['address']}
+        </label>
+         {/loop}
+        {else}
+        <div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+            <input class="form-control" name="address" placeholder="地址" value="{$order_info['address']}" type="text">
+        </div>
+         {/if}
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="" >
+            <input type="hidden" name="op" value="edit">
+            <input type="submit" name="submit" id="submit" value="保存" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+{template 'footer'}
+
+<style>
+    .reminder{
+      border-color: red;
+        border-radius: 0;
+        box-shadow: 0 0 0;
+        text-shadow: 0 0 0;
+    }
+</style>
+<script>
+    $("#add_courier_name").click(function () {
+      $('#courier_name_operation').show();
+      $('#courier_name_default').hide();
+    });
+
+    $(".form-control").blur(function () {
+           if (!$(this).val()){
+                $(this).addClass("reminder");
+           };
+    })
+</script>

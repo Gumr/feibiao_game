@@ -1,0 +1,78 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">用户活力币列表</a></li>
+
+</ul>
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="question">
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">用户昵称</th>
+                <th style="width:70px;">类型</th>
+                <th style="width:70px;">活力币</th>
+                <th style="width:70px;">备注</th>
+                <th style="width:70px;">获得时间</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $data $item}
+            <tr>
+                <td>{$item['member_nickname']}</td>
+                <td>{$item['type_string']}</td>
+                <td>{$item['number']}</td>
+                <td>{$item['remarks']}</td>
+                <td>{php echo date('Y-m-d H:i:s', $item['created'])}</td>
+                <td>
+                    <a name="back" href="javascript:;" onclick="javascript:history.back(-1);"/>返回</a>
+                  <!--  <a href="{php echo $this->createWeburl('member', array('op' => 'editshow', 'id' => $item['id']));}">返回</a>-->
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

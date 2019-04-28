@@ -1,0 +1,88 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">常见问题</a></li>
+    <li class=""><a href="{php echo $this->createWeburl('question', array('op' => 'addshow'));}">添加问题</a></li>
+</ul>
+
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="question">
+</form>
+
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">标题</th>
+                <th style="width:70px;">内容</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['title']}</td>
+                <td>{$item['content']}</td>
+                <td>
+                    <a href="javascript:;" data-id="{$item['id']}" class="settop">置顶</a>
+                    <a href="{php echo $this->createWeburl('question', array('op' => 'editshow', 'id' => $item['id']));}">编辑</a>
+                    <a href="javascript:;" data-id="{$item['id']}" class="delete">删除</a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.settop').click(function () {
+
+            id = $(this).data('id');
+            $.post('', {id:id, op:'settop'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

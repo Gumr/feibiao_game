@@ -1,0 +1,95 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li {if ($op == 'home' || $op ==  "") }class="active"{/if}><a href="{php echo $this->createWeburl('shop');}">商户管理</a></li>
+    <li {if $op == 'addshow'}class="active"{/if}><a href="{php echo $this->createWeburl('shop', array('op' => 'addshow'));}">添加商户</a></li>
+    <li {if $op == 'setting'}class="active"{/if}><a href="javascript:;">入驻设置</a></li>
+    <li {if $op == 'check'}class="active"{/if}><a href="{php echo $this->createWeburl('shop', array('op' => 'check'));}">入驻审核</a></li>
+</ul>
+
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="shop">
+    <div class="form-group">
+        <label class="col-xs-1 col-sm-1 control-label">筛选</label>
+        <div class="col-sm-1 col-xs-1">
+            <input type="text" class="form-control" name="member_name"  value="{$member_name}" />
+        </div>
+        <div class="col-sm-1 col-xs-1">
+            <select name="name">
+                <option value="1">商户名称</option>
+                <option value="1">客户经理</option>
+                <option value="1">联系电话商户</option>
+            </select>
+        </div>
+        <label class="col-xs-1 col-sm-1 control-label">是否过期</label>
+        <div class="col-sm-1 col-xs-1">
+            <select name="name">
+                <option value="1">全部</option>
+                <option value="1">是</option>
+                <option value="1">否</option>
+            </select>
+        </div>
+        <label class="col-xs-1 col-sm-1 control-label">省市区</label>
+        <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-12 col-xs-12">
+                    {php echo tpl_form_field_district('city', $values = array())}
+                </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class=" btn btn-default">搜索</button>
+            <div type="text" class="btn btn-info"> <a href="{php echo $this->createWeburl('order', array('op' => 'excel', 'start_time' => $start_time, 'end_time' => $end_time, 'goods_name'=> $goods_name, 'member_name' => $member_name, 'status' => $order_status));}">导出</a></div>
+        </div>
+    </div>
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">id</th>
+                <th style="width:70px;">客户经理</th>
+                <th style="width:70px;">商户名称</th>
+                <th style="width:80px;">联系电话</th>
+                <th style="width:80px;">入住时间</th>
+                <th style="width:80px;">权限</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['id']}</td>
+                <td>{$item['username']['username']}</td>
+                <td>{$item['shop_name']['shop_name']}</td>
+                <td>{$item['mobile']}</td>
+                <td>{php echo date('Y-m-d H:i:s', $item['created'])}</td>
+                <td>{$item['permissions']}</td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+    });
+
+</script>

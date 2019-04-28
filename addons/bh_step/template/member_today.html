@@ -1,0 +1,41 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">用户步数列表</a></li>
+
+</ul>
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="question">
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">用户昵称</th>
+                <th style="width:70px;">有效步数</th>
+                <th style="width:70px;">赠送步数</th>
+                <th style="width:70px;">时间</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['nickname']['nickname']}</td>
+                <td>{$item['effective_step']}</td>
+                <td>{$item['use_step']}</td>
+                <td>{php echo date('Y-m-d', $item['created'])}</td>
+                <td>
+                    <a name="back" href="javascript:;" onclick="javascript:history.back(-1);"/>返回</a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>

@@ -1,0 +1,77 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">虚拟商品管理</a></li>
+    <li class=""><a href="{php echo $this->createWeburl('goods_fictitious', array('op' => 'addshow', 'id' => $goodsId));}">手动录入虚拟商品</a></li>
+    <li class=""><a href="{php echo $this->createWeburl('goods_fictitious', array('op' => 'addshow_batch', 'id' => $goodsId));}">自动生成</a></li>
+</ul>
+
+
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">虚拟内容</th>
+                <th style="width:80px;">核销方式</th>
+                <th style="width:70px;">状态</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['content']}</td>
+                <td>{php echo $item['is_under_line'] == 1 ? '线上' : '线下核销'}</td>
+                <td>{php echo $item['status'] == 1 ? '未兑换' : ($item['status'] == 2 ? '已领取' : '已核销')}</td>
+                <td>
+                    {if $item['status'] ==1}
+                    <a href="javascript:;" data-id="{$item['goods_id']}"  data-tid="{$item['id']}" class="delete">删除</a>
+                    {elseif $item['status'] ==2}
+                    <a href="javascript:;" data-id="{$item['goods_id']}"  data-tid="{$item['id']}" class="check">已领取</a>
+                    {else}
+                    <a href="javascript:;" data-id="{$item['goods_id']}"  data-tid="{$item['id']}" class="check">已核销</a>
+                    {/if}
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            c_id = $(this).data('tid');
+            $.post('', {id:id,c_id:c_id,op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

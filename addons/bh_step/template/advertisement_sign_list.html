@@ -1,0 +1,113 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li {if ($op == 'home' || $op ==  "addshow") }class="active"{/if}><a href="{php echo $this->createWeburl('advertisement', array('op' => 'home'));}">首页上方</a></li>
+    <li {if $op == 'idle'}class="active"{/if}><a href="{php echo $this->createWeburl('advertisement', array('op' => 'idle'));}">闲来玩玩</a></li>
+    <li {if $op == 'sign'}class="active"{/if}><a href="{php echo $this->createWeburl('advertisement', array('op' => 'sign'));}">签到</a></li>
+    <li {if $op == 'other'}class="active"{/if}><a href="{php echo $this->createWeburl('advertisement', array('op' => 'other'));}">其他</a></li>
+</ul>
+<ul class="nav nav-tabs">
+    <li class=""><a href="{php echo $this->createWeburl('advertisement', array('op' =>$behavior));}">添加广告</a></li>
+</ul>
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="advertisement">
+
+</form>
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">图标</th>
+                <th style="width:80px;">是否是流量组</th>
+           <!--     <th style="width:70px;">标题</th>
+                <th style="width:70px;">描述</th>-->
+                <th style="width:70px;">显示位置</th>
+                <th style="width:70px;">跳转位置</th>
+                <th style="width:70px;">appId</th>
+                <th style="width:70px;">路径</th>
+                <th style="width:70px;">时间</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td><img src="{$item['icon_path']}" width="39px" height="39px;"></td>
+<!--                <td>{$item['title']}</td>
+                <td>{$item['describe']}</td>-->
+                {if $item['mode'] == 2}
+                <td>流量组</td>
+                {else}
+                <td>自定义</td>
+                {/if}
+                <td>{$item['position_place']}</td>
+                <td>{$item['type_place']}</td>
+                {if $item['type'] ==1}
+                <td>{$item['appid']}</td>
+                <td>&nbsp;</td>
+                {else}
+                <td>&nbsp;</td>
+                <td>{$item['path']}</td>
+                {/if}
+                <td>{php echo date('Y-m-d H:i:s', $item['created'])}</td>
+                <td>
+                    <a href="{php echo $this->createWeburl('advertisement', array('op' => 'editshow','position' => $item['position'], 'id' => $item['id']));}">编辑</a>
+                    <a href="javascript:;" data-id="{$item['id']}" class="delete">删除</a>
+                    <a href="javascript:;" data-id="{$item['id']}" class="settop">置顶</a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.delete').click(function () {
+            if (!confirm('确认要删除该问题')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'delete'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('删除失败');
+                }
+
+            }, 'json')
+        });
+
+        $('.settop').click(function () {
+            id = $(this).data('id');
+            $.post('', {id:id, op:'settop'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('置顶失败');
+                }
+
+            }, 'json')
+        });
+        $('.is_down').click(function () {
+            if (!confirm('确认要' + $(this).html())) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'down'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('设置失败');
+                }
+
+            }, 'json')
+        });
+    });
+
+</script>

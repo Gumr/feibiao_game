@@ -1,0 +1,82 @@
+{template 'common/header'}
+<div class="clearfix">
+	<ul class="nav nav-tabs">
+		<li><a href="javascript:history.go(-1)" class="btn btn-primary">返回用户列表</a></li>
+	</ul>
+	<div class="clearfix">
+		<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form2">
+			<div class="panel panel-default" id="step1">
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">用户昵称：</label>
+						<div class="col-md-4">
+							{$info['nickname']}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">OpenID：</label>
+						<div class="col-md-4">
+							{$info['openid']}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">性别：</label>
+						<div class="col-md-4">
+							{if $info['gender']==1}男{else}女{/if}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">地址：</label>
+						<div class="col-md-4">
+							{$info['country']}-{$info['province']}-{$info['city']}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">加入时间：</label>
+						<div class="col-md-4">
+							{php echo date('Y-m-d H:i',$info['createtime'])}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">用户等级：</label>
+						<div class="col-md-4">
+							<select id="level">
+							{loop $fx $f}
+								<option value="{$f['id']}" {if $info['level']==$f['id']}selected="selected"{/if}>{$f['name']}</option>
+							{/loop}
+							</select>
+							<input type="hidden" id="uid" value="{$info['uid']}">
+							<button type="button" class="btn btn-primary changelevel">修改</button>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+</div>
+<script type="text/javascript">
+$(".changelevel").click(function(){
+
+	var level = $("#level").val();
+	var id = $("#uid").val();
+    $.ajax({
+	    type: "POST",
+	    url: "{php echo $this->createWebUrl('Userdo',array('act'=>'changelevel'));php}",
+	    data: {id:id,level:level},
+	    dataType: "json",
+	    success: function(data){
+	    	alert('编辑成功');
+	    }
+	});
+})
+</script>
+{template 'common/footer'}

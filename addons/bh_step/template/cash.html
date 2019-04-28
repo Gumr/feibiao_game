@@ -1,0 +1,101 @@
+{template 'header'}
+<link href="./resource/css/app.css" rel="stylesheet">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">提现管理</a></li>
+</ul>
+
+<form action="./index.php" method="get" class="form-horizontal">
+    <input type="hidden" name="c" value="site">
+    <input type="hidden" name="a" value="entry">
+    <input type="hidden" name="m" value="bh_step">
+    <input type="hidden" name="do" value="cash">
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-1 control-label">提现状态</label>
+        <div class="col-sm-2 col-xs-12">
+            <select name="status" class="col-sm-10">
+                <option value="0" >所有</option>
+                <option {if $status == 1} selected="selected" {/if} value="1">未处理</option>
+                <option {if $status == 2} selected="selected" {/if} value="2">已同意</option>
+                <option {if $status == 3} selected="selected" {/if} value="3">已拒绝</option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+        </div>
+    </div>
+</form>
+
+<div class="panel panel-default">
+    <div class="table-responsive panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">id</th>
+                <th style="width:70px;">提现用户</th>
+                <th style="width:80px;">用户id</th>
+                <th style="width:80px;">提现金额</th>
+                <th style="width:80px;">邀请数量</th>
+                <th style="width:80px;">申请时间</th>
+                <th style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['id']}</td>
+                <td>{$item['member']['nickname']}</td>
+                <td>{$item['member_id']}</td>
+                <td>{$item['money']}</td>
+                <td>{$item['parent']}</td>
+                <td>{php echo date('Y-m-d H:i:s', $item['created'])}</td>
+                <td>
+                    {if $item['status'] > 1}
+                    <a href="javascript:;">{php echo $item['status']==2 ? '已同意' : '已拒绝'}</a>
+
+                    {else}
+                    <a href="javascript:;" data-id="{$item['id']}" class="sgree">同意</a>
+                    <a href="javascript:;" data-id="{$item['id']}" class="refuse">拒绝</a>
+                    {/if}
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {$pager}
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('.sgree').click(function () {
+            if (!confirm('确定同意该提现申请')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'sgree'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert(data.info);
+                }
+
+            }, 'json')
+        });
+
+        $('.refuse').click(function () {
+            if (!confirm('确定拒绝该提现申请,拒绝后提现金额将作废')) {
+                return false;
+            }
+            id = $(this).data('id');
+            $.post('', {id:id, op:'refuse'}, function (data) {
+                if (data.status == 1) {
+                    location.href = location.href;
+                } else {
+                    alert('拒绝失败');
+                }
+            }, 'json')
+        });
+
+
+    });
+
+</script>
